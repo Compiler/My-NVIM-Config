@@ -45,8 +45,29 @@ require("lazy").setup({
             "MunifTanjim/nui.nvim",
             -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
         }
-    }
+    },
+    {
+        'VonHeikemen/lsp-zero.nvim',
+        branch = 'v1.x',
+        dependencies = {
+            -- LSP Support
+            {'neovim/nvim-lspconfig'},             -- Required
+            {'williamboman/mason.nvim'},           -- Optional
+            {'williamboman/mason-lspconfig.nvim'}, -- Optional
 
+            -- Autocompletion
+            {'hrsh7th/nvim-cmp'},         -- Required
+            {'hrsh7th/cmp-nvim-lsp'},     -- Required
+            {'hrsh7th/cmp-buffer'},       -- Optional
+            {'hrsh7th/cmp-path'},         -- Optional
+            {'saadparwaiz1/cmp_luasnip'}, -- Optional
+            {'hrsh7th/cmp-nvim-lua'},     -- Optional
+
+            -- Snippets
+            {'L3MON4D3/LuaSnip'},             -- Required
+            {'rafamadriz/friendly-snippets'}, -- Optional
+        }
+    }
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.
@@ -77,4 +98,25 @@ require("catppuccin").setup({
 vim.cmd.colorscheme "catppuccin"
 
 
+-- Function to expand all nodes
+local function expand_all()
+  require('neo-tree').navigate("filesystem", "/")
+  vim.cmd("normal! zR")
+end
+
+-- Key mapping for expanding all nodes
+vim.api.nvim_set_keymap(
+  'n', 
+  '<leader>e', 
+  ':lua expand_all()<CR>', 
+  { noremap = true, silent = true }
+)
+
 vim.keymap.set('n', '<leader>n', ':Neotree<CR>', {noremap = true, silent = true})
+local lsp = require('lsp-zero')
+lsp.preset('recommended')
+
+-- (Optional) Configure lua language server for neovim
+lsp.nvim_workspace()
+
+lsp.setup()
