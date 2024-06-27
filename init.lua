@@ -3,6 +3,15 @@ vim.cmd("set tabstop=4")
 vim.cmd("set softtabstop=4")
 vim.cmd("set shiftwidth=4")
 vim.cmd("set relativenumber")
+local function nvim_config()
+  local home = os.getenv("HOME")
+  local nvim_config_path = home .. "/.config/nvim"
+  vim.cmd(nvim_config_path)
+end
+
+-- Create a Neovim command that calls the function
+vim.api.nvim_create_user_command('Config', ':e ~/.config/nvim/init.lua', {})
+
 --vim.cmd[[colorscheme neon]]
 vim.g.mapleader = " " 
 
